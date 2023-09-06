@@ -1,0 +1,44 @@
+{% extends 'base.html'%}
+{% block section %}
+<div class="columns">
+    <div class="column"></div>
+    <div class="column is-one-third">
+        <div style="margin: 20pt;">
+            <div style="margin: 5pt;">
+                <h2 class="title">Content image</h2>
+            </div>
+            <div>
+                <img src="../static/content_image.png">
+            </div>
+        </div>
+        <div style="margin: 20pt;">
+            <div style="margin: 5pt;">
+                <h2 class="title">Style image</h2>
+            </div>
+            <div>
+                <img src="../static/style_image.png">
+            </div>
+        </div>
+        <div style="margin: 20pt;">
+            <div style="margin: 5pt;">
+                <h2 class="title">Result image</h2>
+            </div>
+            <div>
+                <img src="../static/result-image.png">
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <a href="{{ url_for('index')}}">
+                    <button class="button is-link">Home</button>
+                </a>
+            </div>
+        </div>
+        
+        
+    </div>
+    <div class="column">
+    </div>
+</div>
+{% endblock %}
