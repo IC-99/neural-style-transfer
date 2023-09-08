@@ -1,7 +1,7 @@
 import tensorflow as tf
 from werkzeug import datastructures
 import time
-from image_handler import get_image, tensor_to_image, show_image, show_two_images, load_image_from_file
+from image_handler import tensor_to_image, load_image_from_file
 from model import NeuralNetwork
 
 ### PARAMETRI ###
@@ -9,8 +9,8 @@ from model import NeuralNetwork
 #style_url = 'https://p.turbosquid.com/ts-thumb/5m/fo2FbO/Kq/render/png/1679499783/600x600/fit_q87/d2223da563cc146e6647eb07a3396663a27647f8/render.jpg'
 output_file_name = 'result-image.png'
 
-style_weight = 0.01
 content_weight = 10000.0
+style_weight = 0.01
 total_variation_weight = 30
 
 epochs = 2
@@ -41,7 +41,6 @@ def transfer(content_image_file: datastructures.file_storage.FileStorage, style_
 
     print("Total time: {:.1f}".format(end-start))
 
-    tensor_to_image(image)
     #show_image(image, 'Result')
     tensor_to_image(image).save('./static/' + output_file_name)
     return
