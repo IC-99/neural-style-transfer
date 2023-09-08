@@ -1,5 +1,5 @@
 import flask
-from flask import request, render_template, redirect, flash, url_for
+from flask import request, render_template
 from neural_style_transfer import transfer
 
 NEURAL_STYLE_TRANSFER = flask.Flask(__name__)
