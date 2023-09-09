@@ -1,6 +1,7 @@
 import tensorflow as tf
 from vgg19 import vgg_layers
 
+# Used to compute style loss (which keeps the generated image close to the local textures of the style reference image).
 def gram_matrix(input_tensor):
     result = tf.linalg.einsum('bijc,bijd->bcd', input_tensor, input_tensor)
     input_shape = tf.shape(input_tensor)
