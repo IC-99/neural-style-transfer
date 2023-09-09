@@ -9,9 +9,12 @@ from model import NeuralNetwork
 #style_url = 'https://p.turbosquid.com/ts-thumb/5m/fo2FbO/Kq/render/png/1679499783/600x600/fit_q87/d2223da563cc146e6647eb07a3396663a27647f8/render.jpg'
 output_file_name = 'result_image.png'
 
-content_weight = 10000.0
-style_weight = 0.01
-total_variation_weight = 30
+#content_weight = 10000.0
+#style_weight = 0.01
+#total_variation_weight = 30
+content_weight = 2.5e-8
+style_weight = 1e-6
+total_variation_weight = 1e-6
 
 #epochs = 10
 #steps_per_epoch = 100
