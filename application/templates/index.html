@@ -21,20 +21,7 @@
                     <input type="file" name="style_image" id="style_image" required="required">
                 </div>
             </div>
-            <div class="field">
-                <label class="label">Epochs (1-10)</label>
-                <div>
-                    <!--Slider version that should be connected with number, can't make it to work-->
-                    <!--input type="range" min=1 max=10 name="epochs" id="epoch_range" onchange="changeInputValue(this.value)"-->
-                    <input type="number" min=1 max=10 name="epochs" id="epoch_number" value=5>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Steps (1-100)</label>
-                <div>
-                    <input type="number" min=1 max=100 name="steps" id="steps" value=10>
-                </div>
-            </div>
+            
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             <ul class=flashes>
