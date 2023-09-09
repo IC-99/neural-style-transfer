@@ -7,17 +7,17 @@ from model import NeuralNetwork
 ### PARAMETRI ###
 #content_url = 'https://media.gettyimages.com/id/1207663571/it/foto/empty-pavement-with-modern-architecture.jpg?s=612x612&w=gi&k=20&c=zs96UNIqroSsjZLtkS0VUww6lBUh1rZ3zq3QU0qaXAA='
 #style_url = 'https://p.turbosquid.com/ts-thumb/5m/fo2FbO/Kq/render/png/1679499783/600x600/fit_q87/d2223da563cc146e6647eb07a3396663a27647f8/render.jpg'
-output_file_name = 'result-image.png'
+output_file_name = 'result_image.png'
 
 content_weight = 10000.0
 style_weight = 0.01
 total_variation_weight = 30
 
-epochs = 2
-steps_per_epoch = 3
+#epochs = 10
+#steps_per_epoch = 100
 #################
 
-def transfer(content_image_file: datastructures.file_storage.FileStorage, style_image_file: datastructures.file_storage.FileStorage):
+def transfer(content_image_file: datastructures.file_storage.FileStorage, style_image_file: datastructures.file_storage.FileStorage, epochs, steps_per_epoch):
 
     content_image_file_data = content_image_file.read()
     style_image_file_data = style_image_file.read()

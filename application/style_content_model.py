@@ -7,7 +7,7 @@ def gram_matrix(input_tensor):
     num_locations = tf.cast(input_shape[1]*input_shape[2], tf.float32)
     return result/(num_locations)
 
-# model that returns the style and content tensors
+# Model that returns the style and content tensors.
 class StyleContentModel(tf.keras.models.Model):
     def __init__(self, style_layers, content_layers):
         super(StyleContentModel, self).__init__()

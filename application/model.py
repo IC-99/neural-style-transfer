@@ -19,7 +19,7 @@ class NeuralNetwork:
         self.total_variation_weight = total_variation_weight
         self.opt = tf.keras.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
 
-    #Look at the statistics of each layer's output
+    # Look at the statistics of each layer's output
     def print_stats(self):
         for name, output in zip(self.style_layers, self.style_outputs):
             print(name)
@@ -40,7 +40,7 @@ class NeuralNetwork:
         loss = style_loss + content_loss
         return loss
     
-    # function to keep the pixel values between 0 and 1
+    # Function to keep the pixel values between 0 and 1
     def clip_0_1(self, image):
         return tf.clip_by_value(image, clip_value_min=0.0, clip_value_max=1.0)
     
