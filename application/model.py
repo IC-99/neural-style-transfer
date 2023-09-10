@@ -34,7 +34,7 @@ class NeuralNetwork:
     # The "style loss" is designed to maintain the style of the reference image in the generated image.
     # It is based on the gram matrices (which capture style) of feature maps from the style reference image
     # and from the generated image.
-    # The "content loss" is designed to maintain the "content" of the base image in the generated image
+    # The "content loss" is designed to maintain the "content" of the base image in the generated image.
     def style_content_loss(self, outputs, style_weight, content_weight):
         style_outputs = outputs['style']
         content_outputs = outputs['content']
