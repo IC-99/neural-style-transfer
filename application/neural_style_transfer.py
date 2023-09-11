@@ -19,16 +19,29 @@ total_variation_weight = 30
 #style_weight = 1e10
 #total_variation_weight = 30
 
-#variation 2
+#variation 2 (idk)
 #content_weight = 7.5e0
 #style_weight = 1e2
 #total_variation_weight = 2e2
+
+#variation 3 (balanced?)
+#content_weight = 1e4
+#style_weight = 1e4
+#total_variation_weight = 30
 
 #epochs = 10
 #steps_per_epoch = 100
 #################
 
-def transfer(content_image_file: datastructures.file_storage.FileStorage, style_image_file: datastructures.file_storage.FileStorage, epochs, steps_per_epoch):
+def transfer(content_image_file: datastructures.file_storage.FileStorage,
+             style_image_file: datastructures.file_storage.FileStorage,
+             epochs, steps_per_epoch, mode):
+
+    global style_weight
+
+    #to change if introducing more modes
+    if mode:
+        style_weight = 1e4
 
     content_image_file_data = content_image_file.read()
     style_image_file_data = style_image_file.read()
