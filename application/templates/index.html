@@ -26,13 +26,13 @@
                 <div>
                     <!--Slider version that should be connected with number, can't make it to work-->
                     <!--input type="range" min=1 max=10 name="epochs" id="epoch_range" onchange="changeInputValue(this.value)"-->
-                    <input type="number" min=1 max=20 name="epochs" id="epoch_number" value=5>
+                    <input type="number" min=1 max=20 name="epochs" id="epoch_number" value=10>
                 </div>
             </div>
             <div class="field">
                 <label class="label">Steps (1-200)</label>
                 <div>
-                    <input type="number" min=1 max=200 name="steps" id="steps" value=50>
+                    <input type="number" min=1 max=200 name="steps" id="steps" value=100>
                 </div>
             </div>
             {% with messages = get_flashed_messages() %}
