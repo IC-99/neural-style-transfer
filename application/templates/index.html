@@ -1,24 +1,49 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 {% block section %}
 <div class="columns">
     <div class="column"></div>
     <div class="column is-one-third">
         <div>
             <h2 class="title">Upload images</h2>
-            <p>Carica la content image e la style image</p>
+            <p>Upload content image and style image</p>
         </div>
         
-        <form action="{{ url_for('index')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{ url_for('index') }}" method="POST" enctype="multipart/form-data">
             <div class="field">
                 <label class="label">Content image</label>
                 <div>
-                    <input type="file" name="content_image" id="content_image">
+                    <input type="file" name="content_image" id="content_image" required="required">
                 </div>
             </div>
             <div class="field">
                 <label class="label">Style image</label>
                 <div>
-                    <input type="file" name="style_image" id="style_image">
+                    <input type="file" name="style_image" id="style_image" required="required">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Mode</label>
+                <div>
+                    <input type="radio" name="mode" id="mode1" value=0 checked>
+                    <label for="mode1">Content oriented</label>
+                </div>
+                <div>
+                    <input type="radio" name="mode" id="mode2" value=1>
+                    <label for="mode2">Style oriented</label>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Epochs (1-20)</label>
+                <div>
+                    <!--Slider version that should be connected with number, can't make it to work-->
+                    <!--input type="range" min=1 max=10 name="epochs" id="epoch_range" onchange="changeInputValue(this.value)"-->
+                    <input type="number" min=1 max=20 name="epochs" id="epoch" value=10>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Steps (1-200)</label>
+                <div>
+                    <input type="number" min=1 max=200 name="steps" id="steps" value=100>
                 </div>
             </div>
             {% with messages = get_flashed_messages() %}

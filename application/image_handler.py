@@ -18,6 +18,7 @@ def tensor_to_image(tensor):
         tensor = tensor[0]
     return PIL.Image.fromarray(tensor)
 
+# Function to load an image and limit its maximum dimension to 512 pixels.
 def load_image(path_to_img):
     max_dim = 512
     img = tf.io.read_file(path_to_img)
@@ -34,6 +35,7 @@ def load_image(path_to_img):
     img = img[tf.newaxis, :]
     return img
 
+# Function to load an image and limit its maximum dimension to 512 pixels.
 def load_image_from_file(img):
     max_dim = 512
     img = tf.image.decode_image(img, channels=3)
@@ -49,6 +51,7 @@ def load_image_from_file(img):
     img = img[tf.newaxis, :]
     return img
 
+# Function to display an image.
 def imshow(image, title=None):
     if len(image.shape) > 3:
         image = tf.squeeze(image, axis=0)
