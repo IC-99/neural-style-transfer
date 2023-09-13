@@ -24,15 +24,19 @@
             <div class="field">
                 <label class="label">Mode</label>
                 <div>
-                    <input type="radio" name="mode" id="mode1" value=0 checked>
+                    <input type="radio" name="mode" id="mode1" value=0 checked onclick="hideShow(1)">
                     <label for="mode1">Content oriented</label>
                 </div>
                 <div>
-                    <input type="radio" name="mode" id="mode2" value=1>
+                    <input type="radio" name="mode" id="mode2" value=1 onclick="hideShow(1)">
                     <label for="mode2">Style oriented</label>
                 </div>
+                <div>
+                    <input type="radio" name="mode" id="mode3" value=2 onclick="hideShow(2)">
+                    <label for="mode2">Fast Style Transfer from Tensorflow</label>
+                </div>
             </div>
-            <div class="field">
+            <div class="field" id="epochs_field">
                 <label class="label">Epochs (1-20)</label>
                 <div>
                     <!--Slider version that should be connected with number, can't make it to work-->
@@ -40,7 +44,7 @@
                     <input type="number" min=1 max=20 name="epochs" id="epoch" value=10>
                 </div>
             </div>
-            <div class="field">
+            <div class="field" id="steps_field">
                 <label class="label">Steps (1-200)</label>
                 <div>
                     <input type="number" min=1 max=200 name="steps" id="steps" value=100>
@@ -67,4 +71,19 @@
     <div class="column">
     </div>
 </div>
+
+<script>
+    const epochs_field = document.getElementById('epochs_field');
+    const steps_field = document.getElementById('steps_field');
+
+    function hideShow(val) {
+        if (val == 2) { 
+            epochs_field.style.display = 'none';
+            steps_field.style.display = 'none';
+        } else {
+            epochs_field.style.display = 'block';
+            steps_field.style.display = 'block';
+        }
+    };
+</script>
 {% endblock %}
