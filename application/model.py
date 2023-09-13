@@ -5,7 +5,9 @@ from style_content_model import StyleContentModel
 class NeuralNetwork:
 
     def __init__(self, content_image, style_image, content_weight, style_weight, total_variation_weight) -> None:
+        # The layer to use for the content loss.
         self.content_layers = ['block5_conv2'] 
+        # List of layers to use for the style loss.
         self.style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
         self.num_content_layers = len(self.content_layers)
         self.num_style_layers = len(self.style_layers)
@@ -19,7 +21,7 @@ class NeuralNetwork:
         self.total_variation_weight = total_variation_weight
         self.opt = tf.keras.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
 
-    #Look at the statistics of each layer's output
+    # Look at the statistics of each layer's output
     def print_stats(self):
         for name, output in zip(self.style_layers, self.style_outputs):
             print(name)
@@ -29,6 +31,10 @@ class NeuralNetwork:
             print("  mean: ", output.numpy().mean())
             print()
 
+    # The "style loss" is designed to maintain the style of the reference image in the generated image.
+    # It is based on the gram matrices (which capture style) of feature maps from the style reference image
+    # and from the generated image.
+    # The "content loss" is designed to maintain the "content" of the base image in the generated image.
     def style_content_loss(self, outputs, style_weight, content_weight):
         style_outputs = outputs['style']
         content_outputs = outputs['content']
@@ -40,7 +46,7 @@ class NeuralNetwork:
         loss = style_loss + content_loss
         return loss
     
-    # function to keep the pixel values between 0 and 1
+    # Function to keep the pixel values between 0 and 1
     def clip_0_1(self, image):
         return tf.clip_by_value(image, clip_value_min=0.0, clip_value_max=1.0)
     
@@ -50,7 +56,6 @@ class NeuralNetwork:
             outputs = self.extractor(image)
             loss = self.style_content_loss(outputs, self.style_weight, self.content_weight)
             loss += self.total_variation_weight * tf.image.total_variation(image)
-
         grad = tape.gradient(loss, image)
         self.opt.apply_gradients([(grad, image)])
         image.assign(self.clip_0_1(image))
