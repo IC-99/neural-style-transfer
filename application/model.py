@@ -1,4 +1,5 @@
 import tensorflow as tf
+import os
 from vgg19 import vgg_layers
 from style_content_model import StyleContentModel
 
@@ -14,6 +15,10 @@ class NeuralNetwork:
         self.style_extractor = vgg_layers(self.style_layers)
         self.style_outputs = self.style_extractor(style_image * 255)
         self.extractor = StyleContentModel(self.style_layers, self.content_layers)
+        #if os.path.exists("./checkpoints/model"):
+        #    print("Model already exists. Trying to load...")
+        #    self.extractor = tf.keras.models.load_model("./checkpoints/model")
+        #    print("Model loaded.")
         self.style_targets = self.extractor(style_image)['style']
         self.content_targets = self.extractor(content_image)['content']
         self.style_weight = style_weight
@@ -68,3 +73,11 @@ class NeuralNetwork:
                 self.train_step(image)
                 print(".", end='', flush=True)
             print("Train step: {}".format(step))
+        #self.save()
+
+    #def save(self):
+    #    self.extractor.compile()
+    #    self.extractor.save("./checkpoints/model")
+
+
+    

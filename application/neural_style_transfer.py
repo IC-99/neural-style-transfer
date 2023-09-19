@@ -1,4 +1,5 @@
 import tensorflow as tf
+import tensorflow_hub as hub
 from werkzeug import datastructures
 import time
 from image_handler import tensor_to_image, load_image_from_file
@@ -36,13 +37,7 @@ total_variation_weight = 30
 def transfer(content_image_file: datastructures.file_storage.FileStorage,
              style_image_file: datastructures.file_storage.FileStorage,
              epochs, steps_per_epoch, mode):
-
-    global style_weight
-
-    #to change if introducing more modes
-    if mode:
-        style_weight = 1e4
-
+    
     content_image_file_data = content_image_file.read()
     style_image_file_data = style_image_file.read()
 
@@ -52,19 +47,24 @@ def transfer(content_image_file: datastructures.file_storage.FileStorage,
     tensor_to_image(content_image).save('./static/content_image.png')
     tensor_to_image(style_image).save('./static/style_image.png')
 
-    #show_two_images(content_image, 'Content Image', style_image, 'Style Image')
+    global style_weight
+    if mode == 1:
+        style_weight = 1e4
 
-    neural_network = NeuralNetwork(content_image, style_image, content_weight, style_weight, total_variation_weight)
-    #neural_network.print_stats()
+    if mode != 2:
+        neural_network = NeuralNetwork(content_image, style_image, content_weight, style_weight, total_variation_weight)
+        #neural_network.print_stats()
 
-    image = tf.Variable(content_image)
+        image = tf.Variable(content_image)
 
-    start = time.time()
-    neural_network.train(image, epochs, steps_per_epoch)
-    end = time.time()
+        start = time.time()
+        neural_network.train(image, epochs, steps_per_epoch)
+        end = time.time()
 
-    print("Total time: {:.1f}".format(end-start))
+        print("Total time: {:.1f}".format(end-start))
+    else:
+        hub_model = hub.load('https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/2')
+        image = hub_model(tf.constant(content_image), tf.constant(style_image))[0]
 
-    #show_image(image, 'Result')
     tensor_to_image(image).save('./static/' + output_file_name)
     return
