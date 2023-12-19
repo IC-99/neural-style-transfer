@@ -1,42 +1,21 @@
 import tensorflow as tf
-import tensorflow_hub as hub
+# import tensorflow_hub as hub
 from werkzeug import datastructures
 import time
 from image_handler import tensor_to_image, load_image_from_file
 from model import NeuralNetwork
 
-### PARAMETRI ###
-#content_url = 'https://media.gettyimages.com/id/1207663571/it/foto/empty-pavement-with-modern-architecture.jpg?s=612x612&w=gi&k=20&c=zs96UNIqroSsjZLtkS0VUww6lBUh1rZ3zq3QU0qaXAA='
-#style_url = 'https://p.turbosquid.com/ts-thumb/5m/fo2FbO/Kq/render/png/1679499783/600x600/fit_q87/d2223da563cc146e6647eb07a3396663a27647f8/render.jpg'
+### PARAMETERS ###
 output_file_name = 'result_image.png'
 
-#default (original content is more visible)
+# default (original content is more visible)
 content_weight = 1e4
 style_weight = 1e-2
 total_variation_weight = 30
 
-#variation 1 (more style)
-#content_weight = 1e-10
-#style_weight = 1e10
-#total_variation_weight = 30
-
-#variation 2 (idk)
-#content_weight = 7.5e0
-#style_weight = 1e2
-#total_variation_weight = 2e2
-
-#variation 3 (balanced?)
-#content_weight = 1e4
-#style_weight = 1e4
-#total_variation_weight = 30
-
-#epochs = 10
-#steps_per_epoch = 100
-#################
-
 def transfer(content_image_file: datastructures.file_storage.FileStorage,
              style_image_file: datastructures.file_storage.FileStorage,
-             epochs, steps_per_epoch, mode):
+             epochs: int, steps_per_epoch: int, mode: int):
     
     content_image_file_data = content_image_file.read()
     style_image_file_data = style_image_file.read()
@@ -53,7 +32,7 @@ def transfer(content_image_file: datastructures.file_storage.FileStorage,
 
     if mode != 2:
         neural_network = NeuralNetwork(content_image, style_image, content_weight, style_weight, total_variation_weight)
-        #neural_network.print_stats()
+        # neural_network.print_stats()
 
         image = tf.Variable(content_image)
 
@@ -63,8 +42,9 @@ def transfer(content_image_file: datastructures.file_storage.FileStorage,
 
         print("Total time: {:.1f}".format(end-start))
     else:
-        hub_model = hub.load('https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/2')
-        image = hub_model(tf.constant(content_image), tf.constant(style_image))[0]
+        # hub_model = hub.load('https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/2')
+        model = tf.keras.models.load_model("./model")
+        image = model(tf.constant(content_image), tf.constant(style_image))[0]
 
     tensor_to_image(image).save('./static/' + output_file_name)
     return

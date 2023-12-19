@@ -8,25 +8,28 @@ class NeuralNetwork:
     def __init__(self, content_image, style_image, content_weight, style_weight, total_variation_weight) -> None:
         # The layer to use for the content loss.
         self.content_layers = ['block5_conv2'] 
+
         # List of layers to use for the style loss.
         self.style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
+
         self.num_content_layers = len(self.content_layers)
         self.num_style_layers = len(self.style_layers)
+
         self.style_extractor = vgg_layers(self.style_layers)
         self.style_outputs = self.style_extractor(style_image * 255)
+
         self.extractor = StyleContentModel(self.style_layers, self.content_layers)
-        #if os.path.exists("./checkpoints/model"):
-        #    print("Model already exists. Trying to load...")
-        #    self.extractor = tf.keras.models.load_model("./checkpoints/model")
-        #    print("Model loaded.")
+
         self.style_targets = self.extractor(style_image)['style']
         self.content_targets = self.extractor(content_image)['content']
+
         self.style_weight = style_weight
         self.content_weight = content_weight
         self.total_variation_weight = total_variation_weight
+
         self.opt = tf.keras.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
 
-    # Look at the statistics of each layer's output
+    # Prints the statistics of each layer's output
     def print_stats(self):
         for name, output in zip(self.style_layers, self.style_outputs):
             print(name)
@@ -43,11 +46,13 @@ class NeuralNetwork:
     def style_content_loss(self, outputs, style_weight, content_weight):
         style_outputs = outputs['style']
         content_outputs = outputs['content']
+
         style_loss = tf.add_n([tf.reduce_mean((style_outputs[name] - self.style_targets[name])**2) for name in style_outputs.keys()])
         style_loss *= style_weight / self.num_style_layers
 
         content_loss = tf.add_n([tf.reduce_mean((content_outputs[name] - self.content_targets[name])**2) for name in content_outputs.keys()])
         content_loss *= content_weight / self.num_content_layers
+
         loss = style_loss + content_loss
         return loss
     
@@ -61,9 +66,9 @@ class NeuralNetwork:
             outputs = self.extractor(image)
             loss = self.style_content_loss(outputs, self.style_weight, self.content_weight)
             loss += self.total_variation_weight * tf.image.total_variation(image)
-        grad = tape.gradient(loss, image)
-        self.opt.apply_gradients([(grad, image)])
-        image.assign(self.clip_0_1(image))
+            grad = tape.gradient(loss, image)
+            self.opt.apply_gradients([(grad, image)])
+            image.assign(self.clip_0_1(image))
 
     def train(self, image, epochs, steps_per_epoch):
         step = 0
@@ -73,11 +78,7 @@ class NeuralNetwork:
                 self.train_step(image)
                 print(".", end='', flush=True)
             print("Train step: {}".format(step))
-        #self.save()
 
-    #def save(self):
-    #    self.extractor.compile()
-    #    self.extractor.save("./checkpoints/model")
-
-
-    
+    def save(self):
+        self.extractor.compile()
+        self.extractor.save("./checkpoints/model")
