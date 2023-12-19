@@ -14,8 +14,6 @@ def index():
     style_image = request.files.get('style_image', '')
     epochs = request.form.get('epochs', type=int)
     steps = request.form.get('steps', type=int)
-    #epochs = int(request.form['epochs'])
-    #steps = int(request.form['steps'])
     mode = request.form.get('mode', type=int)
 
     transfer(content_image, style_image, epochs, steps, mode)

@@ -20,13 +20,6 @@ class NeuralNetwork:
 
         self.extractor = StyleContentModel(self.style_layers, self.content_layers)
 
-        """
-        if os.path.exists("./checkpoints/model"):
-            print("Model already exists. Trying to load...")
-            self.extractor = tf.keras.models.load_model("./checkpoints/model")
-            print("Model loaded.")
-        """
-
         self.style_targets = self.extractor(style_image)['style']
         self.content_targets = self.extractor(content_image)['content']
 
@@ -36,7 +29,7 @@ class NeuralNetwork:
 
         self.opt = tf.keras.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
 
-    # Look at the statistics of each layer's output
+    # Prints the statistics of each layer's output
     def print_stats(self):
         for name, output in zip(self.style_layers, self.style_outputs):
             print(name)
@@ -85,7 +78,6 @@ class NeuralNetwork:
                 self.train_step(image)
                 print(".", end='', flush=True)
             print("Train step: {}".format(step))
-        #self.save()
 
     def save(self):
         self.extractor.compile()

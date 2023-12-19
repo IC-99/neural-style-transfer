@@ -35,7 +35,7 @@ def load_image(path_to_img):
     img = img[tf.newaxis, :]
     return img
 
-# Function to load an image and limit its maximum dimension to 512 pixels.
+# Function to load an image from a file and limit its maximum dimension to 512 pixels.
 def load_image_from_file(img):
     max_dim = 512
     img = tf.image.decode_image(img, channels=3)
